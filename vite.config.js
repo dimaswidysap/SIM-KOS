@@ -4,25 +4,30 @@ import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    laravel({
-      input: ["resources/css/app.css", "resources/js/app.js"],
-      refresh: true,
-    }),
-    tailwindcss(),
-    vue({
-      template: {
-        transformAssetUrls: {
-          base: null,
-          includeAbsolute: false,
+    plugins: [
+        laravel({
+            input: ["resources/css/app.css", "resources/js/app.js"],
+            refresh: true,
+        }),
+        tailwindcss(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+    ],
+    resolve: {
+        alias: {
+            // Alias '@' opsional agar import lebih rapi: import { ... } from '@/Components/...'
+            "@": "/resources/js",
         },
-      },
-    }),
-  ],
-  resolve: {
-    alias: {
-      // Alias '@' opsional agar import lebih rapi: import { ... } from '@/Components/...'
-      "@": "/resources/js",
     },
-  },
+    server: {
+        watch: {
+            usePolling: true,
+        },
+    },
 });
