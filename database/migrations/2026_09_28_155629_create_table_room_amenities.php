@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('room_amenities', function (Blueprint $table) {
@@ -19,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
 
              $table->foreign('id_room')->references('id')->on('rooms');
-             $table->foreign('id_facility')->references('id')->on('facility');
+             $table->foreign('id_facility')->references('id')->on('facilities');
         });
 
     }

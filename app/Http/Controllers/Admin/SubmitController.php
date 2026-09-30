@@ -14,4 +14,8 @@ class SubmitController extends Controller
     {
         return Inertia::render('admin/submit');
     }
+
+    public function store(){
+
+    }
 }

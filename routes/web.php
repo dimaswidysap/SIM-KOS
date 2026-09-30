@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\SubmitController;
+use App\Http\Controllers\Admin\FacilityController;
 
 // Halaman umum / publik
 Route::get('/', function () {
@@ -21,8 +22,13 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
         // halaman submit pelanggan
        Route::get('/submit', [SubmitController::class, 'create'])->name('admin.submit');
+       //    fasilitas
+       Route::get('/facility', [FacilityController::class, 'pageFacility'])->name('admin.facility');
+       Route::get('/facility/create', [FacilityController::class, 'pageFormFacility'])->name('admin.form.facility');
+       route::post('/facilityStore',[FacilityController::class,'facilityStore'])->name('facility.store');
+
         //
-        Route::inertia('/dashboard', 'dashboard')->name('admin-dashboard');
+        Route::inertia('/dashboard', 'admin/dashboard')->name('admin-dashboard');
     });
 
     Route::prefix('penyewa')->group(function () {
