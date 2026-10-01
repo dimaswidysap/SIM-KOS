@@ -5,6 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\SubmitController;
 use App\Http\Controllers\Admin\FacilityController;
+use App\Http\Controllers\Admin\RoomController;
 
 // Halaman umum / publik
 Route::get('/', function () {
@@ -21,11 +22,15 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->group(function () {
         // halaman submit pelanggan
-       Route::get('/submit', [SubmitController::class, 'create'])->name('admin.submit');
-       //    fasilitas
-       Route::get('/facility', [FacilityController::class, 'pageFacility'])->name('admin.facility');
-       Route::get('/facility/create', [FacilityController::class, 'pageFormFacility'])->name('admin.form.facility');
-       route::post('/facilityStore',[FacilityController::class,'facilityStore'])->name('facility.store');
+        Route::get('/pelanggan', [SubmitController::class, 'create'])->name('admin.submit');
+        //    fasilitas
+        Route::get('/facilities', [FacilityController::class, 'pageFacility'])->name('admin.facility');
+        Route::get('/facilities/create', [FacilityController::class, 'pageFormFacility'])->name('admin.form.facility');
+        route::post('/facilityStore', [FacilityController::class, 'facilityStore'])->name('facility.store');
+
+        //  kamar
+        Route::get('/rooms', [RoomController::class, 'pageRoom'])->name('admin.rooms');
+
 
         //
         Route::inertia('/dashboard', 'admin/dashboard')->name('admin-dashboard');

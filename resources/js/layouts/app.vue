@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
+import AdminSideBar from "../components/AdminSideBar.vue";
+import Notification from "../components/Notification.vue";
 
 const page = usePage();
 const isSidebarOpen = ref(false);
@@ -8,6 +10,9 @@ const isSidebarOpen = ref(false);
 
 <template>
     <div class="min-h-screen flex bg-gray-100">
+        <!-- Komponen Notifikasi Global -->
+        <Notification />
+
         <!-- Overlay: Diubah dari 'md:hidden' ke 'lg:hidden' -->
         <div
             v-if="isSidebarOpen"
@@ -16,7 +21,6 @@ const isSidebarOpen = ref(false);
         ></div>
 
         <!-- 1. SIDEBAR -->
-
         <aside
             :class="[
                 'fixed lg:static inset-y-0 left-0 z-30 w-[20rem] bg-slate-900 text-white flex flex-col transition-transform duration-300 lg:translate-x-0',
@@ -30,43 +34,7 @@ const isSidebarOpen = ref(false);
                 KOST JIWAN
             </div>
 
-            <!-- Menu Navigasi -->
-            <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                <Link
-                    href="/admin/dashboard"
-                    :class="[
-                        'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
-                        page.url.startsWith('/admin/dashboard')
-                            ? 'bg-blue-600 text-white'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white',
-                    ]"
-                >
-                    Dashboard
-                </Link>
-
-                <Link
-                    href="/admin/submit"
-                    :class="[
-                        'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
-                        page.url.startsWith('/admin/submit')
-                            ? 'bg-blue-600 text-white'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white',
-                    ]"
-                >
-                    Tambah Pelanggan
-                </Link>
-                <Link
-                    href="/admin/facility"
-                    :class="[
-                        'flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors',
-                        page.url.startsWith('/admin/facility')
-                            ? 'bg-blue-600 text-white'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white',
-                    ]"
-                >
-                    Fasilitas
-                </Link>
-            </nav>
+            <AdminSideBar />
 
             <!-- Profile Info -->
             <div
@@ -90,7 +58,7 @@ const isSidebarOpen = ref(false);
             <header
                 class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0"
             >
-                <!-- Tombol Hamburger: Diubah dari 'md:hidden' ke 'lg:hidden' (akan muncul di Mobile & Tablet) -->
+                <!-- Tombol Hamburger -->
                 <button
                     @click="isSidebarOpen = true"
                     class="lg:hidden text-gray-600 hover:text-gray-900 focus:outline-none"

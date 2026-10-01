@@ -13,7 +13,10 @@ class FacilityController extends Controller
     //
     public function pageFacility(): Response
     {
-        return Inertia::render('admin/facility');
+        $facilities = Facilities::all();
+        return Inertia::render('admin/facility', [
+            'facilities' => $facilities,
+        ]);
     }
     public function pageFormFacility(): Response
     {
