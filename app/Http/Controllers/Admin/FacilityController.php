@@ -36,4 +36,13 @@ class FacilityController extends Controller
         // Tambahkan redirect kembali ke halaman list
         return redirect()->back()->with('success', 'Fasilitas berhasil ditambahkan');
     }
+
+    public function destroy(Facilities $facility)
+    {
+        // Hapus data dari database
+        $facility->delete();
+
+        // Redirect kembali dengan pesan sukses (akan otomatis ditangkap oleh Notification.vue)
+        return redirect()->back()->with('success', 'Fasilitas berhasil dihapus');
+    }
 }

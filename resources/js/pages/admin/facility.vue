@@ -1,6 +1,6 @@
 <script setup>
 import MainLayout from "@/layouts/app.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 
 defineOptions({
     layout: MainLayout,
@@ -13,6 +13,15 @@ defineProps({
         default: () => [],
     },
 });
+
+// Fungsi untuk menghapus fasilitas
+function handleDelete(id) {
+    if (confirm("Apakah Anda yakin ingin menghapus fasilitas ini?")) {
+        router.delete(`/admin/facilities/${id}`, {
+            preserveScroll: true,
+        });
+    }
+}
 </script>
 
 <template>
@@ -45,6 +54,7 @@ defineProps({
                             <th class="py-3 px-4">No</th>
                             <th class="py-3 px-4">Nama Fasilitas</th>
                             <th class="py-3 px-4">Deskripsi</th>
+                            <th class="py-3 px-4 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -63,6 +73,14 @@ defineProps({
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">
                                 {{ item.description || "-" }}
+                            </td>
+                            <td class="py-3 px-4 text-sm text-center">
+                                <button
+                                    @click="handleDelete(item.id)"
+                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-medium transition"
+                                >
+                                    Hapus
+                                </button>
                             </td>
                         </tr>
                     </tbody>

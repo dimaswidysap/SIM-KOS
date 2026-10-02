@@ -27,10 +27,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/facilities', [FacilityController::class, 'pageFacility'])->name('admin.facility');
         Route::get('/facilities/create', [FacilityController::class, 'pageFormFacility'])->name('admin.form.facility');
         route::post('/facilityStore', [FacilityController::class, 'facilityStore'])->name('facility.store');
+        Route::delete('/facilities/{facility}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
 
         //  kamar
         Route::get('/rooms', [RoomController::class, 'pageRoom'])->name('admin.rooms');
-
+        Route::get('/rooms/create', [RoomController::class, 'pageCreateRoom'])->name('admin.rooms');
+        Route::post('/roomsStore', [RoomController::class, 'roomsStore'])->name('rooms.store');
+        Route::get('/rooms/{room}', [RoomController::class, 'pageDetailRoom'])->name('admin.rooms.detail');
+        Route::delete('/rooms/{room}', [RoomController::class, 'roomsDestroy'])->name('rooms.destroy');
 
         //
         Route::inertia('/dashboard', 'admin/dashboard')->name('admin-dashboard');
