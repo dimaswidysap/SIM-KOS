@@ -21,7 +21,7 @@ function handleDelete(id) {
 </script>
 
 <template>
-    <!-- {{ room }} -->
+    {{ room }}
     <div class="max-w-4xl mx-auto p-6">
         <div
             class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
@@ -120,6 +120,14 @@ function handleDelete(id) {
                     </div>
                 </div>
             </div>
+
+            <h1>Fasilitas kamar</h1>
+
+            <ul>
+                <li v-for="facility in room.facilities" :key="facility.id">
+                    <span>{{ facility.facility_name }}</span>
+                </li>
+            </ul>
 
             <!-- Tombol Aksi -->
             <div

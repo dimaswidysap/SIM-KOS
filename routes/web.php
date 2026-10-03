@@ -35,6 +35,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/roomsStore', [RoomController::class, 'roomsStore'])->name('rooms.store');
         Route::get('/rooms/{room}', [RoomController::class, 'pageDetailRoom'])->name('admin.rooms.detail');
         Route::delete('/rooms/{room}', [RoomController::class, 'roomsDestroy'])->name('rooms.destroy');
+        Route::get('/rooms/{room}/edit', [RoomController::class, 'roomsPageEdit'])->name('rooms.page.edit');
+Route::put('/rooms/{room}', [RoomController::class, 'roomUpdate'])->name('rooms.update');
+
 
         //
         Route::inertia('/dashboard', 'admin/dashboard')->name('admin-dashboard');

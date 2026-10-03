@@ -29,7 +29,7 @@ class RoomController extends Controller
         $request->validate([
             'room_no' => ['required', 'string', 'max:255', Rule::unique('rooms', 'no_room')],
             'room_floor' => ['required', 'integer', 'max:3', 'min:1'],
-            'room_price' => ['required', 'numeric', 'min:550'],
+            'room_price' => ['required', 'numeric', 'min:550000'],
             'room_status' => ['required', 'string', Rule::in(['tersedia', 'tidak_tersedia', 'renovasi'])],
         ]);
 
@@ -43,9 +43,12 @@ class RoomController extends Controller
         return redirect()->back()->with('success', 'Kamar berhasil dibuat');
     }
 
-    public function pageDetailRoom(Rooms $room)
+   public function pageDetailRoom(Rooms $room)
 {
-    return inertia::render('admin/rooms/roomsDetail', [
+    // Load relasi facilities agar datanya terikut ke dalam $room
+    $room->load('facilities');
+
+    return Inertia::render('admin/rooms/roomsDetail', [
         'room' => $room,
     ]);
 }
@@ -60,4 +63,47 @@ class RoomController extends Controller
         // Redirect kembali dengan pesan sukses (akan otomatis ditangkap oleh Notification.vue)
         return redirect()->back()->with('success', 'Kamar berhasil dihapus');
     }
+
+   public function roomsPageEdit(Rooms $room): Response
+    {
+        // Load relasi fasilitas agar checkbox otomatis tercentang sesuai data terdahulu
+        $room->load('facilities');
+        $facilities = Facilities::all();
+
+        return Inertia::render('admin/rooms/roomEdit', [
+            'room' => $room,
+            'facilities' => $facilities,
+        ]);
+    }
+
+    public function roomUpdate(Request $request, Rooms $room)
+    {
+        $validated = $request->validate([
+            'room_no' => 'required|string|unique:rooms,no_room,' . $room->id,
+            'room_floor' => 'required|numeric',
+            'room_price' => 'required|numeric',
+            'room_status' => 'required|string',
+            'facilities' => 'nullable|array',
+            'facilities.*' => 'exists:facilities,id',
+        ]);
+
+        $room->update([
+            'no_room' => $validated['room_no'],
+            'floor' => $validated['room_floor'],
+            'price' => $validated['room_price'],
+            'status_room' => $validated['room_status'],
+        ]);
+
+        // Format data pivot untuk mengisi kolom status di tabel room_amenities
+        $syncData = collect($request->facilities)->mapWithKeys(function ($facilityId) {
+            return [$facilityId => ['status' => 'aktif']];
+        })->toArray();
+
+        // Sinkronisasi data relasi fasilitas kamar
+        $room->facilities()->sync($syncData);
+
+        return redirect()->route('rooms.page.edit', $room->id)->with('success', 'Data kamar berhasil diperbarui');
+    }
+
+
 }
